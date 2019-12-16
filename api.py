@@ -26,19 +26,30 @@ def signup():
 	# AT THIS POINT THE USER HAS FILLED OUT THE REACT FORM WITH EMAIL. WE NEED TO GET THAT USER A TOKEN. THE PROCESS TO GET A TOKEN INVOLVES GETTING REDIRECTION FROM YAHOO_OAUTH SO WE HAVE TO INITALIZE A YAHOO_OAUTH OBJECT
 	# email,consumer_key,consumer_secret,redirect_uri,response_type (code),redirect_uricode,grant_type(WHERE IS THIS),access_token,token_type,expire_in,refresh_token,guid
 	# INSERT INTO DATABASE email/some unique user id, consumer_key, consumer_secret, redirect_uri, access token, refresh time (all those fields)
-	user={"email":email,"consumer_key":app.config["CONSUMER_KEY"],"consumer_secret":app.config["CONSUMER_SECRET"],"redirect_uri":app.config["REDIRECT_URI"],"response_type":"code","access_token":None,"guid":None,"refresh_token":None,"token_time":None,"token_type":None}
-	MongoClient(app.config["DATABASE_URI"]).lineup2date.users.insert_one(user)
+	user={"email":email,"consumer_key":app.config["CONSUMER_KEY"],"consumer_secret":app.config["CONSUMER_SECRET"],"redirect_uri":app.config["REDIRECT_URI"],"response_type":"code","access_token":None,"xoauth_yahoo_guid":None,"refresh_token":None,"expires_in":None,"token_type":None,"token_time":None}
+	MongoClient(app.config["DATABASE_URI"],retryWrites='false').lineup2date.users.insert_one(user)
 	oauth2=Yahoo_OAuth2(email,app.config["CONSUMER_KEY"],app.config["CONSUMER_SECRET"],app.config["REDIRECT_URI"],False,None)
-	MongoClient(app.config["DATABASE_URI"]).lineup2date.users.insert_one(user)
 
-@app.route('/signup/callback/',methods=['GET'])
+@app.route('/signup/callback',methods=['GET'])
 def callback():
 	print('CALLBACK COMIN IN HOT')
 	email = request.args.get('email')
 	code = request.args.get('code')
+	print(email)
+	print(code)
 	# RETRIEVE FROM DATABASE email/some unique user id, consumer_key, consumer_secret, and redirect_uri
 	user=MongoClient(app.config["DATABASE_URI"]).lineup2date.users.find_one({"email":email})
 	oauth2=Yahoo_OAuth2(email,user["consumer_key"],user["consumer_secret"],user["redirect_uri"],True,code)
+
+@app.route('/home',methods=['GET'])
+def getleaguesandteams():
+	email = request.args.get('email')
+	user=MongoClient(app.config["DATABASE_URI"]).lineup2date.users.find_one({"email":email})
+	oauth2=Yahoo_OAuth2(email,user["consumer_key"],user["consumer_secret"],user["redirect_uri"],False,None)
+	thebaseurl='https://fantasysports.yahooapis.com/fantasy/v2/'
+	theurl=thebaseurl+'users;use_login=1/games/teams' #returns all my teams
+	response=oauth2.session.get(theurl, params={"format": "json"})
+	print(response.json())
 
 
 	# Then oauth2=Yahoo_OAuth2(app.config["CONSUMER_KEY"],app.config["CONSUMER_SECRET"],app.config["REDIRECT_URI"])
