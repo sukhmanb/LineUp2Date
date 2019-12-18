@@ -73,6 +73,7 @@ def getleaguesandteams(oauth2):
     allteamsjson=json.dumps(allteams)
     print("ALL TEAMS LEAGUE NAME, URL, AND ROSTERS:")
     print(allteamsjson)
+    return allteamsjson
     # NOW HAVE ALL THE USERS TEAMS IN A JSON ARRAY [MOLLIED OUT WELKER,LOAD MANAGEMENT]
     # where MOLLIED OUT WELKER is a dictionary of team name, team url, game key, player 1,..,player n
 
