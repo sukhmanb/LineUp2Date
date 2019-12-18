@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Welcome from './Welcome.js'
+import Team from './Team.js'
 
 
 class Layout extends React.Component {
@@ -26,6 +27,34 @@ class Layout extends React.Component {
       this.setState({ isFetchingData: true });
       axios.get('http://localhost:5000/home',{params:{'email':this.state.email}}).then((data) => {
         console.log(data)
+        // This is how you access the data
+        console.log(data.data[0]["team_name"])
+        // console.log(type(data.data[0]))
+        let count=0
+        let theteam=[]
+        for (const [ key, value ] of Object.entries(data.data[0])) {
+          if (count<3) {
+            //team_name, team_url, game_key
+            theteam.push(<h3>value</h3>)
+          }
+          else {
+            //roster
+            let fullname=value.fullname;
+            let selected_position=value.selected_position;
+            let headshoturl=value.headshot.headshot.url;
+            let headshotsize=value.headshot.headshot.size;
+            theteam.push(<div><p>fullname</p><p>selected_position</p>)
+            theteam.push(<img src={headshoturl.toString()} alt={fullname.toString()} />)
+            theteam.push(</div>)
+            // console.log(value.fullname)
+            // console.log(value.selected_position)
+            // console.log(value.headshot.headshot.url)
+            // console.log(value.headshot.headshot.size)
+
+          }
+          count=count+1;
+        }
+        console.log(theteam)
         this.setState({
           isFetchingData: true,
           data:data
@@ -55,7 +84,7 @@ class Layout extends React.Component {
     // NEED TO SOMEHOW DISPLAY THE DATA
     return (
       <div>
-      {this.state.submitted ? <div><h3>{this.state.email}</h3>{codeblock}</div>:<Welcome email={this.state.email} onEmailChange={this.handleEmailChange} onSubmitChange={this.handleSubmitChange} />}
+      {this.state.submitted ? <div><h3>{this.state.email}</h3><Team data={this.state.data} /></div>:<Welcome email={this.state.email} onEmailChange={this.handleEmailChange} onSubmitChange={this.handleSubmitChange} />}
       </div>
     );
   }
