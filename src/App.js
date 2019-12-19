@@ -12,7 +12,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <Layout />
       </header>
     </div>
@@ -20,3 +19,4 @@ function App() {
 }
 
 export default App;
+// <img src={logo} className="App-logo" alt="logo" />
