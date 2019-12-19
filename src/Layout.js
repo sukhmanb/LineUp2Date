@@ -10,6 +10,7 @@ class Layout extends React.Component {
     let storedsubmitted=false
     let storedemail=localStorage.getItem('email') || ''
     if (storedemail!='') {
+      console.log("We have email in localstorage")
       storedsubmitted=true
     }
     this.state = {email:storedemail,submitted:storedsubmitted,isFetchingData:false,data:null};
@@ -30,33 +31,33 @@ class Layout extends React.Component {
         // This is how you access the data
         console.log(data.data[0]["team_name"])
         // console.log(type(data.data[0]))
-        let count=0
-        let theteam=[]
-        for (const [ key, value ] of Object.entries(data.data[0])) {
-          if (count<3) {
-            //team_name, team_url, game_key
-            theteam.push(<h3>value</h3>)
-          }
-          else {
-            //roster
-            let fullname=value.fullname;
-            let selected_position=value.selected_position;
-            let headshoturl=value.headshot.headshot.url;
-            let headshotsize=value.headshot.headshot.size;
-            theteam.push(<div><p>fullname</p><p>selected_position</p>)
-            theteam.push(<img src={headshoturl.toString()} alt={fullname.toString()} />)
-            theteam.push(</div>)
-            // console.log(value.fullname)
-            // console.log(value.selected_position)
-            // console.log(value.headshot.headshot.url)
-            // console.log(value.headshot.headshot.size)
-
-          }
-          count=count+1;
-        }
-        console.log(theteam)
+        // let count=0
+        // let theteam=[]
+        // for (const [ key, value ] of Object.entries(data.data[0])) {
+        //   if (count<3) {
+        //     //team_name, team_url, game_key
+        //     theteam.push(<h3>value</h3>)
+        //   }
+        //   else {
+        //     //roster
+        //     let fullname=value.fullname;
+        //     let selected_position=value.selected_position;
+        //     let headshoturl=value.headshot.headshot.url;
+        //     let headshotsize=value.headshot.headshot.size;
+        //     theteam.push(<div><p>fullname</p><p>selected_position</p>)
+        //     theteam.push(<img src={headshoturl.toString()} alt={fullname.toString()} />)
+        //     theteam.push(</div>)
+        //     // console.log(value.fullname)
+        //     // console.log(value.selected_position)
+        //     // console.log(value.headshot.headshot.url)
+        //     // console.log(value.headshot.headshot.size)
+        //
+        //   }
+        //   count=count+1;
+        // }
+        // console.log(theteam)
         this.setState({
-          isFetchingData: true,
+          isFetchingData: false,
           data:data
         });
       });
@@ -74,17 +75,21 @@ class Layout extends React.Component {
   }
   render() {
     let codeblock=null
-    if (!this.state.data) {
-      codeblock=<p>No data</p>;
+    if (this.state.data==null) {
+      if (this.state.isFetchingData==false) {
+        codeblock=<p>Not fetching data and data is null</p>;
+      }
+      else {
+        codeblock=<p>Fetching data</p>;
+      }
     }
-    if (!this.state.isLoading) {
-      codeblock=<p>Loading data</p>;
+    else {
+      codeblock=<Team data={this.state.data} />
     }
-    codeblock=<p>{this.state.data}</p>;
     // NEED TO SOMEHOW DISPLAY THE DATA
     return (
       <div>
-      {this.state.submitted ? <div><h3>{this.state.email}</h3><Team data={this.state.data} /></div>:<Welcome email={this.state.email} onEmailChange={this.handleEmailChange} onSubmitChange={this.handleSubmitChange} />}
+      {this.state.submitted ? <div><h3>{this.state.email}</h3>{codeblock}</div>:<Welcome email={this.state.email} onEmailChange={this.handleEmailChange} onSubmitChange={this.handleSubmitChange} />}
       </div>
     );
   }

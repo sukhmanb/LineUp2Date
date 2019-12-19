@@ -6,6 +6,7 @@ class Team extends React.Component {
 // After this, it is the roster of the team: QB,WR1,WR2,RB1,RB2,TE,W/R/T,
 constructor(props) {
   super(props);
+  console.log("PRINTING THE PROPS:")
   console.log(this.props)
 }
 constructRoster() {
@@ -14,7 +15,7 @@ constructRoster() {
   for (const [ key, value ] of Object.entries(this.props.data.data[0])) {
     if (count<3) {
       //team_name, team_url, game_key
-      theteam.push(<h3>value</h3>)
+      theteam.push(<h3>{value}</h3>)
     }
     else {
       //roster
@@ -22,9 +23,7 @@ constructRoster() {
       let selected_position=value.selected_position;
       let headshoturl=value.headshot.headshot.url;
       let headshotsize=value.headshot.headshot.size;
-      theteam.push(<div><p>fullname</p><p>selected_position</p>)
-      theteam.push(<img src={headshoturl.toString()} alt={fullname.toString()} />)
-      theteam.push(</div>)
+      theteam.push(<div><p>{fullname}</p><p>{selected_position}</p><img src={headshoturl.toString()} alt={fullname.toString()} /></div>)
       // console.log(value.fullname)
       // console.log(value.selected_position)
       // console.log(value.headshot.headshot.url)
