@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import Layout from './Layout.js'
 // import mattyice from '/public/design/8780.png'
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // THIS IS WHAT IS RENDERED BY THE APP!
 // THERE WILL BE A LOT OF COMPONENTS AND CONDITIONALS
 //  (I.E. IF app.state.email is blank, show signup stuff <Welcome/>)

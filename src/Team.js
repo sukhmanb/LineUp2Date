@@ -1,21 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
+// import Nav from 'react-bootstrap/Navbar';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+
+// import NavDropdown from 'react-bootstrap/Navbar';
+
 
 const Div = styled.div `
 background-color: #D0D0D0;
 color: black;
 width:855px;
+height:70px;
 margin:0 auto;
-margin-bottom:10px;
+margin-bottom:20px;
 text-align:left;
+border-radius: 25px;
 `;
-const Logo = styled.img `
-float:left;
-height:100px;
-width:200px;
-`
-const styleSpanone={'margin-left': '20px','font-weight':'bold'};
-const styleSpantwo={'float': 'right','font-weight':'bold'};
+// const Logo = styled.img `
+// float:left;
+// height:100px;
+// width:200px;
+// `
+const styleImg={'margin-left':'10px','line-height':'70px'}
+const styleSpanone={'margin-left': '20px','line-height': '70px','font-weight':'bold'};
+const styleSpantwo={'float': 'right','line-height': '70px','font-weight':'bold'};
 
 
 // const Playername = styled.p ``
@@ -42,7 +52,7 @@ constructRoster() {
       let selected_position=value.selected_position;
       let headshoturl=value.headshot.headshot.url;
       let headshotsize=value.headshot.headshot.size;
-      theteam.push(<Div><img src={headshoturl.toString()} alt={fullname.toString()} /><span style={styleSpanone}>{fullname}</span><span style={styleSpantwo}>{selected_position}</span></Div>)
+      theteam.push(<Div><img style={styleImg} src={headshoturl.toString()} alt={fullname.toString()} /><span style={styleSpanone}>{fullname}</span><span style={styleSpantwo}>{selected_position}</span></Div>)
       // console.log(value.fullname)
       // console.log(value.selected_position)
       // console.log(value.headshot.headshot.url)
@@ -75,7 +85,29 @@ constructRoster() {
   render() {
     return(
       <div>
-      <Logo src='design/nfl100.png' alt="nfl100" />
+      <Navbar bg="dark" variant="dark">
+      <Navbar.Brand href="#home">
+      <img
+      src="design/nfl100.png"
+      width="100"
+      height="50"
+      className="d-inline-block align-top"
+      alt="React Bootstrap logo"
+      />
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+<Navbar.Collapse id="basic-navbar-nav">
+  <Nav className="mr-auto">
+    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+      <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+      <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+      <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+    </NavDropdown>
+  </Nav>
+  </Navbar.Collapse>
+      </Navbar>
         {this.constructRoster()}
       </div>
     )
