@@ -26,6 +26,7 @@ border-radius: 25px;
 const styleImg={'margin-left':'10px','line-height':'70px'}
 const styleSpanone={'margin-left': '20px','line-height': '70px','font-weight':'bold'};
 const styleSpantwo={'float': 'right','line-height': '70px','font-weight':'bold'};
+const h3centered={'text-align':'center'};
 
 
 // const Playername = styled.p ``
@@ -37,18 +38,80 @@ constructor(props) {
   super(props);
   console.log("PRINTING THE PROPS:")
   console.log(this.props)
+  this.state = {displayedTeam:0};
+  this.handleClick.bind(this)
+
 }
-constructRoster() {
+handleClick(e) {
+  console.log("Handle click, the data id is:")
+  let dataid=e.target.getAttribute('data-id');
+  // CONSOLE.LOG IS CORRECT BUT THEN SOMEHOW WHEN YOU SET STATE dataid is undefined
+  console.log(dataid);
+  this.setState({displayedTeam:dataid})
+}
+constructNavbar() {
+  console.log("THIS IS WHERE WE CONSTRUCT THE NAVBAR")
+  let teamname=this.props.data.data[this.state.displayedTeam].team_name;
+  console.log(teamname)
+  let navbarlist=[];
+  // navbarlist.push(<div><Navbar bg="light" variant="light"><Navbar.Brand href="#home"><img src="design/nfl100.png" width="100" height="50" className="d-inline-block align-top" alt="React Bootstrap logo"/></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav" /><Navbar.Collapse id="basic-navbar-nav"><Nav className="mr-auto"><NavDropdown title={teamname} id="basic-nav-dropdown">)
+  // navbarlist.push(<Navbar bg="light" variant="light"><Navbar.Brand href="#home"><img src="design/nfl100.png" width="100" height="50" className="d-inline-block align-top" alt="React Bootstrap logo"/></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav" /><Navbar.Collapse id="basic-navbar-nav"><Nav className="mr-auto"><NavDropdown title={this.props.data.data[this.state.displayedTeam].team_name} id="basic-nav-dropdown">)
+  // navbarlist.push(<NavDropdown title={this.props.data.data[this.state.displayedTeam].team_name} id="basic-nav-dropdown">)
+  console.log(navbarlist)
+  let numteams=this.props.data.data.length;
+  var i=0;
+  for (i=0; i < this.props.data.data.length; i++) {
+    if (i==this.state.displayedTeam) {
+      console.log("Displayed team is:")
+      console.log(i)
+
+    }
+    else {
+      console.log("Ids are:")
+      console.log(i)
+      // console.log("blah")
+      navbarlist.push(<NavDropdown.Item data-id={i} onClick={this.handleClick}>{this.props.data.data[i].team_name}-{this.props.data.data[i].game_key}</NavDropdown.Item>);
+
+    }
+  }
+  // navbarlist.unshift(<NavDropdown title={teamname} id="basic-nav-dropdown">);
+  let navbarlist2=[];
+  navbarlist2.push(<NavDropdown title={teamname} id="basic-nav-dropdown">{navbarlist}</NavDropdown>);
+  let navbarlist3=[];
+
+  // navbarlist.push(</NavDropdown>);
+  navbarlist3.push(<Nav className="mr-auto">{navbarlist2}</Nav>);
+  // navbarlist.push(</Nav>);
+  let navbarlist4=[];
+  navbarlist4.push(<Navbar.Collapse id="basic-navbar-nav">{navbarlist3}</Navbar.Collapse>);
+  // navbarlist.push(</Navbar.Collapse>);
+  let navbarlist5=[];
+  navbarlist5.push(<Navbar><Navbar.Brand href="#home"><img src="design/nfl100.png" width="100" height="50" className="d-inline-block align-top" alt="React Bootstrap logo"/></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav" />{navbarlist4}</Navbar>);
+  // navbarlist.push(</Navbar>);
+  // navbarlist.unshift(<div>);
+  // navbarlist.push(</div>);
+  return navbarlist5
+
+
+  // navbarlist.push(</NavDropdown></Nav></Navbar.Collapse></Navbar>)
+  // return navbarlist
+
+}
+constructRoster(team) {
   let count=0
   let theteam=[]
-  for (const [ key, value ] of Object.entries(this.props.data.data[2])) {
+  //
+  let numteams=this.props.data.data.length;
+  console.log(numteams)
+  for (const [ key, value ] of Object.entries(this.props.data.data[team])) {
     if (count<3) {
       //team_name, team_url, game_key
-      theteam.push(<h3>{value}</h3>)
+      theteam.push(<h3 style={h3centered}>{value}</h3>)
     }
     else {
       //roster
       let fullname=value.fullname;
+      this.fullname=value.fullname;
       let selected_position=value.selected_position;
       let headshoturl=value.headshot.headshot.url;
       let headshotsize=value.headshot.headshot.size;
@@ -85,30 +148,8 @@ constructRoster() {
   render() {
     return(
       <div>
-      <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="#home">
-      <img
-      src="design/nfl100.png"
-      width="100"
-      height="50"
-      className="d-inline-block align-top"
-      alt="React Bootstrap logo"
-      />
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-<Navbar.Collapse id="basic-navbar-nav">
-  <Nav className="mr-auto">
-    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-      <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-      <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-      <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-      <NavDropdown.Divider />
-      <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-    </NavDropdown>
-  </Nav>
-  </Navbar.Collapse>
-      </Navbar>
-        {this.constructRoster()}
+        {this.constructNavbar()}
+        {this.constructRoster(this.state.displayedTeam)}
       </div>
     )
   }

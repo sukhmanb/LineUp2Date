@@ -77,19 +77,19 @@ class Layout extends React.Component {
     let codeblock=null
     if (this.state.data==null) {
       if (this.state.isFetchingData==false) {
-        codeblock=<p>Not fetching data and data is null</p>;
+        codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Not fetching data and data is null</p></div>;
       }
       else {
-        codeblock=<p>Fetching data</p>;
+        codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Fetching data</p></div>;
       }
     }
     else {
-      codeblock=<Team data={this.state.data} />
+      codeblock=<div className="App-left"><Team data={this.state.data} /></div>
     }
     // NEED TO SOMEHOW DISPLAY THE DATA
     return (
       <div>
-      {this.state.submitted ? <div><h3>{this.state.email}</h3>{codeblock}</div>:<Welcome email={this.state.email} onEmailChange={this.handleEmailChange} onSubmitChange={this.handleSubmitChange} />}
+      {this.state.submitted ? <div>{codeblock}</div>:<Welcome email={this.state.email} onEmailChange={this.handleEmailChange} onSubmitChange={this.handleSubmitChange} />}
       </div>
     );
   }
