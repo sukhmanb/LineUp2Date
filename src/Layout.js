@@ -77,7 +77,9 @@ class Layout extends React.Component {
     let codeblock=null
     if (this.state.data==null) {
       if (this.state.isFetchingData==false) {
-        codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Not fetching data and data is null</p></div>;
+        codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Completing signup process, authorize app with Yahoo. Once you authorize the app, this page will automatically refresh.</p><i className="fa fa-spinner fa-spin"></i></div>;
+        setTimeout(function() {
+          window.location.reload();}, 30000);
       }
       else {
         codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Fetching data</p><i className="fa fa-spinner fa-spin"></i></div>;

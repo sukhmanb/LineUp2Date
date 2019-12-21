@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,redirect
 from flask_restful import Resource, Api
 import pymongo
 from pymongo import MongoClient
 from LineUp2Date.Yahoo_OAuth2 import Yahoo_OAuth2
 from LineUp2Date.commonmethods import *
+import urllib
 
 from flask_cors import CORS
 import jsonpickle
@@ -51,11 +52,14 @@ def callback():
 	# RETRIEVE FROM DATABASE email/some unique user id, consumer_key, consumer_secret, and redirect_uri
 	user=MongoClient(app.config["DATABASE_URI"]).lineup2date.users.find_one({"email":email})
 	oauth2=Yahoo_OAuth2(email,user["consumer_key"],user["consumer_secret"],user["redirect_uri"],True,code)
-	baseurl="/home?"
+	baseurl="http:localhost:3000/home?"
 	emailparams={"email":email}
 	redirect_uri = baseurl + urllib.parse.urlencode(emailparams)
-	return redirect(redirect_uri)
+	return redirect('/authorized')
 
+@app.route('/authorized',methods=['GET'])
+def authorized():
+	return "You have authorized the app. Please close this tab and return back to the initial window to begin!"
 @app.route('/home',methods=['GET'])
 def home():
 	email = request.args.get('email')
