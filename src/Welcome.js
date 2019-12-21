@@ -39,7 +39,10 @@ class Welcome extends React.Component {
   render() {
     return (
       <div>
-      <h1>Welcome to LineUp2Date</h1>
+      <img className="App-logo" src="lineup2Date.png"/>
+      <br></br>
+      <h3>Enter your Yahoo Fantasy Sports email to begin.</h3>
+      <br></br>
       <form method="get" onSubmit={this.handleSubmit}>
         <label>
           Email:
