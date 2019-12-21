@@ -26,7 +26,7 @@ border-radius: 25px;
 const styleImg={'margin-left':'10px','line-height':'70px'}
 const styleSpanone={'margin-left': '20px','line-height': '70px','font-weight':'bold'};
 const styleSpantwo={'float': 'right','line-height': '70px','font-weight':'bold'};
-const h3centered={'text-align':'center'};
+const h3centered={'text-align':'center','font-weight':'bold','margin-bottom':'2px'};
 
 
 // const Playername = styled.p ``
@@ -39,19 +39,23 @@ constructor(props) {
   console.log("PRINTING THE PROPS:")
   console.log(this.props)
   this.state = {displayedTeam:0};
-  this.handleClick.bind(this)
+  this.handleClick=this.handleClick.bind(this)
 
 }
-handleClick(e) {
-  console.log("Handle click, the data id is:")
-  let dataid=e.target.getAttribute('data-id');
-  // CONSOLE.LOG IS CORRECT BUT THEN SOMEHOW WHEN YOU SET STATE dataid is undefined
+handleClick(event) {
+  let dataid=event.target.getAttribute('data-teamid');
+  // CONSOLE.LOG IS CORRECT BUT THEN SOMEHOW WHEN YOU SET STATE dataid is undefinedd
   console.log(dataid);
   this.setState({displayedTeam:dataid})
+  console.log("Handle click, the data id is:")
+
+  // this.setState({displayedTeam:e.target.getAttribute('teamid')})
 }
 constructNavbar() {
   console.log("THIS IS WHERE WE CONSTRUCT THE NAVBAR")
   let teamname=this.props.data.data[this.state.displayedTeam].team_name;
+  let leaguename=this.props.data.data[this.state.displayedTeam].game_key;
+
   console.log(teamname)
   let navbarlist=[];
   // navbarlist.push(<div><Navbar bg="light" variant="light"><Navbar.Brand href="#home"><img src="design/nfl100.png" width="100" height="50" className="d-inline-block align-top" alt="React Bootstrap logo"/></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav" /><Navbar.Collapse id="basic-navbar-nav"><Nav className="mr-auto"><NavDropdown title={teamname} id="basic-nav-dropdown">)
@@ -70,7 +74,7 @@ constructNavbar() {
       console.log("Ids are:")
       console.log(i)
       // console.log("blah")
-      navbarlist.push(<NavDropdown.Item data-id={i} onClick={this.handleClick}>{this.props.data.data[i].team_name}-{this.props.data.data[i].game_key}</NavDropdown.Item>);
+      navbarlist.push(<NavDropdown.Item data-teamid={i} onClick={this.handleClick}>{this.props.data.data[i].team_name}<i className="fas fa-basketball-ball"></i></NavDropdown.Item>);
 
     }
   }
@@ -85,8 +89,9 @@ constructNavbar() {
   let navbarlist4=[];
   navbarlist4.push(<Navbar.Collapse id="basic-navbar-nav">{navbarlist3}</Navbar.Collapse>);
   // navbarlist.push(</Navbar.Collapse>);
+  let imgsrc="design/"+leaguename+".png";
   let navbarlist5=[];
-  navbarlist5.push(<Navbar><Navbar.Brand href="#home"><img src="design/nfl100.png" width="100" height="50" className="d-inline-block align-top" alt="React Bootstrap logo"/></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav" />{navbarlist4}</Navbar>);
+  navbarlist5.push(<Navbar><Navbar.Brand href="#home"><img src={imgsrc} width="100" height="50" className="d-inline-block align-top" alt="React Bootstrap logo"/></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav" />{navbarlist4}</Navbar>);
   // navbarlist.push(</Navbar>);
   // navbarlist.unshift(<div>);
   // navbarlist.push(</div>);
@@ -106,7 +111,20 @@ constructRoster(team) {
   for (const [ key, value ] of Object.entries(this.props.data.data[team])) {
     if (count<3) {
       //team_name, team_url, game_key
-      theteam.push(<h3 style={h3centered}>{value}</h3>)
+      if (count==0)
+      {
+        theteam.push(<h3 style={h3centered}>{value}</h3>)
+      }
+      // team_url
+      if (count==1)
+      {
+        theteam.push(<div style={h3centered}><a target="_blank" href={value}><img src="design/yahoo.png" width="50" height="50" /></a></div>)
+      }
+      //game_key
+      if (count==2) {
+        console.log(value)
+
+      }
     }
     else {
       //roster

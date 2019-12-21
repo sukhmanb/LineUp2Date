@@ -80,7 +80,7 @@ class Layout extends React.Component {
         codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Not fetching data and data is null</p></div>;
       }
       else {
-        codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Fetching data</p></div>;
+        codeblock=<div><img className="App-logo" src="lineup2Date.png"/><h3>{this.state.email}</h3><p>Fetching data</p><i className="fa fa-spinner fa-spin"></i></div>;
       }
     }
     else {
