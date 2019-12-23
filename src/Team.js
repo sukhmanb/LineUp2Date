@@ -15,7 +15,7 @@ width:855px;
 height:70px;
 margin:0 auto;
 margin-bottom:20px;
-text-align:left;
+textAlign:left;
 border-radius: 25px;
 `;
 // const Logo = styled.img `
@@ -24,9 +24,9 @@ border-radius: 25px;
 // width:200px;
 // `
 const styleImg={'margin-left':'10px','line-height':'70px'}
-const styleSpanone={'margin-left': '20px','line-height': '70px','font-weight':'bold'};
-const styleSpantwo={'float': 'right','line-height': '70px','font-weight':'bold'};
-const h3centered={'text-align':'center','font-weight':'bold','margin-bottom':'2px'};
+const styleSpanone={'margin-left': '20px','line-height': '70px','fontWeight':'bold'};
+const styleSpantwo={'float': 'right','line-height': '70px','fontWeight':'bold','margin-right':'7px'};
+const h3centered={'textAlign':'center','fontWeight':'bold','margin-bottom':'2px'};
 
 
 // const Playername = styled.p ``

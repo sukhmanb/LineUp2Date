@@ -10,6 +10,7 @@ import time
 from requests.auth import HTTPBasicAuth
 
 
+
 class Yahoo_OAuth2:
 	def __init__(self,email,consumer_key,consumer_secret,redirect_uri,isCallBack,code):
 		self.email=email
@@ -84,7 +85,9 @@ class Yahoo_OAuth2:
 				paramslist = {"client_secret":self.consumer_secret, "redirect_uri":redirect_uri,"response_type":"code","client_id":self.consumer_key,"email":self.email}
 				url = base_url + urllib.parse.urlencode(paramslist)
 				print(url)
-				webbrowser.open(url)
+				self.auth_url=url
+				# redirect(url)
+				# webbrowser.open(url)
 					# response=requests.get(url)
 					# print(response.json())
 			# ELSE, THE USER HAS A TOKEN AND MOST LIKELY JUST NEEDS TO UPDATE/REFRESH IT. IN THIS CASE, DON'T NEED TO BE REDIRECTED

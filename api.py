@@ -41,6 +41,8 @@ def signup():
 	user={"email":email,"consumer_key":app.config["CONSUMER_KEY"],"consumer_secret":app.config["CONSUMER_SECRET"],"redirect_uri":app.config["REDIRECT_URI"],"response_type":"code","access_token":None,"xoauth_yahoo_guid":None,"refresh_token":None,"expires_in":None,"token_type":None,"token_time":None}
 	MongoClient(app.config["DATABASE_URI"],retryWrites='false').lineup2date.users.insert_one(user)
 	oauth2=Yahoo_OAuth2(email,app.config["CONSUMER_KEY"],app.config["CONSUMER_SECRET"],app.config["REDIRECT_URI"],False,None)
+	return {'auth_url':oauth2.auth_url}
+	print(type(oauth2))
 
 @app.route('/signup/callback',methods=['GET'])
 def callback():
@@ -52,14 +54,14 @@ def callback():
 	# RETRIEVE FROM DATABASE email/some unique user id, consumer_key, consumer_secret, and redirect_uri
 	user=MongoClient(app.config["DATABASE_URI"]).lineup2date.users.find_one({"email":email})
 	oauth2=Yahoo_OAuth2(email,user["consumer_key"],user["consumer_secret"],user["redirect_uri"],True,code)
-	baseurl="http:localhost:3000/home?"
-	emailparams={"email":email}
-	redirect_uri = baseurl + urllib.parse.urlencode(emailparams)
+	# baseurl="http:localhost:3000/home?"
+	# emailparams={"email":email}
+	# redirect_uri = baseurl + urllib.parse.urlencode(emailparams)
 	return redirect('/authorized')
 
 @app.route('/authorized',methods=['GET'])
 def authorized():
-	return "You have authorized the app. Please close this tab and return back to the initial window to begin!"
+	return '<div><h3>Authorized! Close the initial window and click <a target="_blank" href="http://localhost:3000">here</a> to access the application.</h3></div>'
 @app.route('/home',methods=['GET'])
 def home():
 	email = request.args.get('email')

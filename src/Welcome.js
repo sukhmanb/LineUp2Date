@@ -30,7 +30,9 @@ class Welcome extends React.Component {
 
     axios.post('http://localhost:5000/signup',{'email':this.props.email})
     .then(response => {
+      console.log(response)
       console.log("VI HAR SENDT INN !!!:")
+      this.props.onAuthResponse(response);
       // this.setState({ trumfdata: response.data })
     })
     .catch(err => console.log("Error", err))
